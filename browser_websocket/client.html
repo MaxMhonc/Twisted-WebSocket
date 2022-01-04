@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Connected users: <span id="count">...</span></h1>
+<!--
+Короткая ссылка на CDN-версию библиотеки autobahn.js
+За дополнительной информацией обращайтесь по адресу:
+https://github.com/crossbario/autobahn-js
+-->
+<script src="http://goo.gl/1pfDD1"></script>
+<script>
+    /* Если вы используете старый браузер, эта часть кода должна выглядеть иначе.
+    Этот код будет работать, начиная с версии IE11.*/
+    var sock = new WebSocket("ws://127.0.0.1:9000");
+    /* Так же как в версии на Python, можно добавить обработчики sock.onopen() и sock.onclose().
+    Но в данном примере нам требуется реагировать только
+    на получаемые сообщения: */
+    sock.onmessage = function (e) {
+        var span = document.getElementById('count');
+        span.innerHTML = e.data;
+    }
+</script>
+
+</body>
+</html>

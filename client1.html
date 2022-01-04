@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form name="sumForm"><input type="text" name="number" value="3"></form>
+<script src="https://goo.gl/1pfDD1"></script>
+<script>
+    // Подключиться к маршрутизатору WAMP
+    var connection = new autobahn.Connection({
+        url: "ws://127.0.0.1:8080/ws",
+        realm: "realm1"
+    });
+    // Обратный вызов для обработки события успешного подключения
+    connection.onopen = function (session, details) {
+        // Зарегистрировать функцию под именем "sum", чтобы любой
+        // WAMP-клиент в группе "realm1" смог вызвать ее. Это и есть RPC.
+        session.register('sum', function (a) {
+            // В действительности это самая обычная функция. Но параметры
+            // и возвращаемое значение должны быть сериализуемыми.
+            // По умолчанию в JSON.
+            return parseInt(a) + parseInt(document.sumForm.number.value);
+        })
+        ;
+    }
+    // Установить соединение
+    connection.open();
+</script>
+</body>
+</html>
